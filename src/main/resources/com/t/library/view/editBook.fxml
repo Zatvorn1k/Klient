@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="298.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.t.library.Controller.EditBookController">
+   <children>
+      <GridPane layoutX="51.0" layoutY="35.0" prefHeight="201.0" prefWidth="421.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Название">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label text="Автор" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label text="Издание" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label text="Год выпуска" GridPane.rowIndex="3">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label text="Раздел в библиотеке" GridPane.rowIndex="4">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="Field_bookName" GridPane.columnIndex="1" />
+            <TextField fx:id="Field_bookAuthor" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="Field_bookPublishing" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="Field_bookYear" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="Field_bookChapter" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+         </children>
+      </GridPane>
+      <ButtonBar layoutX="91.0" layoutY="249.0" prefHeight="40.0" prefWidth="250.0">
+        <buttons>
+          <Button mnemonicParsing="false" onAction="#SaveBook" text="Сохранить">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Button>
+            <Button fx:id="CloseBook" mnemonicParsing="false" text="Закрыть">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Button>
+        </buttons>
+      </ButtonBar>
+   </children>
+</AnchorPane>
