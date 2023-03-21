@@ -36,7 +36,7 @@ public class MainApp extends Application {
    public static boolean showPersonEditDialog(BookEntity bookObj, int id){
        try {
           FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/editBook.fxml"));
+            loader.setLocation(MainApp.class.getResource("view/editWin.fxml"));
              AnchorPane main = (AnchorPane) loader.load();
              Stage dialogStage = new Stage();
              dialogStage.setTitle("Редактирование книги");
@@ -44,7 +44,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(main);
              EditBookController controller = loader.getController();
              controller.setDialogStage(dialogStage);
-             controller.setLabels(bookObj, id);
+//             controller.setLabels(bookObj, id);
            dialogStage.setScene(scene);
             dialogStage.showAndWait();
              return controller.isOkClicked();

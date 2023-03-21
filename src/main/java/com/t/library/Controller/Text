@@ -1,0 +1,35 @@
+//    @FXML
+//    private void removeBook() throws IOException {
+//        BookEntity selectedPerson = tableBooks.getSelectionModel().getSelectedItem();
+//        if (selectedPerson != null) {
+//            System.out.println(selectedPerson.getId());
+//            http.delete(api + "delete/", selectedPerson.getId());
+//            booksData.remove(selectedPerson);
+//        } else {
+//
+//            Alert alert = new Alert(Alert.AlertType.WARNING);
+//            alert.setTitle("Ничего не выбрано");
+//            alert.setHeaderText("Отсутствует выбраный пользователь");
+//            alert.setContentText("Пожалуйста, выберите пользователя в таблице");
+//            alert.showAndWait();
+//        }
+//    }
+//
+//    @FXML
+//    private void editBook() throws Exception{
+//        BookEntity selectedPerson = tableBooks.getSelectionModel().getSelectedItem();
+//        if (selectedPerson != null) {
+//            MainApp.showPersonEditDialog(selectedPerson, booksData.indexOf(selectedPerson));
+//            http.put(api + "update", gson.toJson(selectedPerson).toString());
+//        }
+//        else {
+//            // Ничего не выбрано
+//            Alert alert = new Alert(Alert.AlertType.WARNING);
+//            //alert.initOwner(Application.getPrimaryStage());
+//            alert.setTitle("Ничего не выбрно");
+//            alert.setHeaderText("Отсутствует выбраный польватель");
+//            alert.setContentText("Пожалуйста, выберите пользвоателя в таблице");
+//            alert.setContentText("Пожалуйста, выберите пользвоателя в таблицеа");
+//            alert.showAndWait();
+//        }
+//    }
