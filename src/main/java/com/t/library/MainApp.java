@@ -1,8 +1,12 @@
 package com.t.library;
 
+import com.t.library.Controller.EditAuthorController;
 import com.t.library.Controller.EditBookController;
+import com.t.library.Controller.EditPublisherController;
 import com.t.library.Controller.MainController;
+import com.t.library.Entity.AuthorEntity;
 import com.t.library.Entity.BookEntity;
+import com.t.library.Entity.PublisherEntity;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -36,7 +40,7 @@ public class MainApp extends Application {
    public static boolean showPersonEditDialog(BookEntity bookObj, int id){
        try {
           FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/editWin.fxml"));
+            loader.setLocation(MainApp.class.getResource("view/editWinBook.fxml"));
              AnchorPane main = (AnchorPane) loader.load();
              Stage dialogStage = new Stage();
              dialogStage.setTitle("Редактирование книги");
@@ -44,7 +48,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(main);
              EditBookController controller = loader.getController();
              controller.setDialogStage(dialogStage);
-//             controller.setLabels(bookObj, id);
+           controller.setInit(bookObj, id);
            dialogStage.setScene(scene);
             dialogStage.showAndWait();
              return controller.isOkClicked();
@@ -53,16 +57,45 @@ public class MainApp extends Application {
             return false;
        }
     }
-    public static void secretka() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("view/secret.fxml"));
-        AnchorPane main = (AnchorPane) loader.load();
-        Stage dialogStage = new Stage();
-        dialogStage.setTitle("qt_cat.exe");
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        Scene scene = new Scene(main);
-        dialogStage.setScene(scene);
-        dialogStage.showAndWait();
+    public static boolean showAuthorEditDialog(AuthorEntity authorObj, int id){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/editWinAuthor.fxml"));
+            AnchorPane main = (AnchorPane) loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Редактирование книги");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(main);
+            EditAuthorController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setInit(authorObj, id);
+            dialogStage.setScene(scene);
+            dialogStage.showAndWait();
+            return controller.isOkClicked();
+        } catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static boolean showPublisherEditDialog(PublisherEntity publisherObj, int id){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/editWinPublisher.fxml"));
+            AnchorPane main = (AnchorPane) loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Редактирование книги");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(main);
+            EditPublisherController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setInit(publisherObj, id);
+            dialogStage.setScene(scene);
+            dialogStage.showAndWait();
+            return controller.isOkClicked();
+        } catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
     }
     public static void main(String[] args) {launch();}
 }

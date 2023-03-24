@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class BookEntity {
-    public Long id;
+    public int id;
     public String title;
     public AuthorEntity author;
     public PublisherEntity publisher;

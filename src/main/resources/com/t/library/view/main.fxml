@@ -15,7 +15,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tableBooks" layoutY="-1.0" prefHeight="439.0" prefWidth="719.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-1.0">
+                        <TableView fx:id="tableBooks" layoutY="33.0" prefHeight="405.0" prefWidth="719.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                           <columns>
                             <TableColumn fx:id="bookAuthor" prefWidth="75.0" text="Автор" />
                             <TableColumn fx:id="bookName" prefWidth="75.0" text="Название" />
@@ -28,6 +28,9 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
+                        <Button layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#addWinBook" text="Добавить" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="636.0" AnchorPane.topAnchor="8.0" />
+                        <Button layoutX="87.0" layoutY="8.0" mnemonicParsing="false" text="Редактировать" AnchorPane.rightAnchor="534.0" AnchorPane.topAnchor="8.0" />
+                        <Button layoutX="189.0" layoutY="8.0" mnemonicParsing="false" onAction="#DeleteBook" text="Удалить" AnchorPane.rightAnchor="470.0" AnchorPane.topAnchor="8.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -36,7 +39,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tableAuthor" layoutY="-2.0" prefHeight="439.0" prefWidth="719.0" AnchorPane.bottomAnchor="-4.0" AnchorPane.topAnchor="-2.0">
+                        <TableView fx:id="tableAuthor" layoutY="-2.0" prefHeight="439.0" prefWidth="719.0" AnchorPane.bottomAnchor="-4.0" AnchorPane.topAnchor="40.0">
                           <columns>
                               <TableColumn fx:id="AuthorLastname" prefWidth="75.0" text="Фамилия" />
                             <TableColumn prefWidth="75.0" text="Id" visible="false" />
@@ -47,6 +50,9 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
+                        <Button layoutY="14.0" mnemonicParsing="false" onAction="#addWinAuthor" text="Добавить" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0" />
+                        <Button layoutX="87.0" layoutY="8.0" mnemonicParsing="false" text="Редактировать" />
+                        <Button layoutX="188.0" layoutY="9.0" mnemonicParsing="false" onAction="#DeleteAuthor" text="Удалить" />
                      </children>
                   </AnchorPane>
             </content>
@@ -55,7 +61,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tablePublisher" layoutY="-2.0" prefHeight="438.0" prefWidth="725.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.topAnchor="-2.0">
+                        <TableView fx:id="tablePublisher" layoutY="-2.0" prefHeight="438.0" prefWidth="725.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.topAnchor="40.0">
                           <columns>
                             <TableColumn prefWidth="75.0" text="Id" visible="false" />
                             <TableColumn fx:id="PublisherName" prefWidth="75.0" text="Название Издательства" />
@@ -65,14 +71,14 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
+                        <Button layoutY="14.0" mnemonicParsing="false" onAction="#addWinPublisher" text="Добавить" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0" />
+                        <Button layoutX="87.0" layoutY="8.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="Редактировать" />
+                        <Button layoutX="189.0" layoutY="8.0" mnemonicParsing="false" onAction="#DeletePublisher" text="Удалить" />
                      </children>
                   </AnchorPane>
               </content>
             </Tab>
         </tabs>
       </TabPane>
-      <Button mnemonicParsing="false" text="Удалить" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="2.0" />
-      <Button mnemonicParsing="false" onAction="#addWin" text="Добавить" AnchorPane.rightAnchor="190.0" AnchorPane.topAnchor="2.0" />
-      <Button mnemonicParsing="false" text="Редактировать" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="2.0" />
    </children>
 </AnchorPane>

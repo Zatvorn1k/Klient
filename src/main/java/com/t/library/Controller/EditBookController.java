@@ -2,61 +2,65 @@ package com.t.library.Controller;
 import com.t.library.Entity.AuthorEntity;
 import com.t.library.Entity.BookEntity;
 import com.t.library.Entity.PublisherEntity;
-import com.t.library.MainApp;
-import com.t.library.Utils.HTTPUtils;
+import com.t.library.Model.AuthorModel;
+import com.t.library.Model.BookModel;
+import com.t.library.Model.ComboModel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lombok.NonNull;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.t.library.Controller.MainController.*;
 
 public class EditBookController {
-    @FXML
-    private TextField FieldAuthorLastname;
 
     @FXML
-    private TextField FieldAuthorName;
-
-    @FXML
-    private TextField FieldAuthorSurname;
-
-    @FXML
-    private ComboBox<?> FieldBookAuthor;
+    private ComboBox<ComboModel> FieldBookAuthor;
 
     @FXML
     private TextField FieldBookKind;
+    @FXML
+    private MainController main = new MainController();
 
     @FXML
-    private ComboBox<?> FieldBookPublisher;
+    private ComboBox<ComboModel> FieldBookPublisher;
 
     @FXML
     private TextField FieldBookTitle;
 
     @FXML
     private TextField FieldBookYear;
-
-    @FXML
-    private TextField FieldPublisherCity;
-
-    @FXML
-    private TextField FieldPublisherName;
-    @FXML
-    public MainController mc = new MainController();
-
+    private ObservableList<ComboModel> authorMap = FXCollections.observableArrayList();
+    private ObservableList<ComboModel> publisherMap = FXCollections.observableArrayList();
     private Stage editBookStage;
     private BookEntity book;
-    private AuthorEntity author;
-    private PublisherEntity publisher;
-    private int bookID, authorId, PublisherId;
+    private int bookID;
     private boolean okClicked = false;
+    @FXML
+    private void initialize() throws Exception {
+        updateMap();
+        updateComboBox();
+    }
+    private void updateComboBox() throws Exception {
+        FieldBookAuthor.setItems(authorMap);
+        FieldBookPublisher.setItems(publisherMap);
+    }
+    private void updateMap(){
+        for(int i = 0;i < authorData.size();i++){
+            authorMap.add(new ComboModel(authorData.get(i).getId(), main.getFio(authorData.get(i))));
+        }
+        for(int i = 0;i < publisherData.size();i++){
+            publisherMap.add(new ComboModel(publisherData.get(i).getId(), publisherData.get(i).getPublisher()));
 
+        }
+    }
     public void setDialogStage(Stage dialogStage) {
         this.editBookStage = dialogStage;
     }
@@ -64,57 +68,36 @@ public class EditBookController {
     public boolean isOkClicked() {
         return okClicked;
     }
-
-    public void setLabels (BookEntity bookIn, int Id) {
+    public void setInit (BookEntity bookIn, int Id){
         this.book = bookIn;
         this.bookID = Id;
-
-       Field_bookName.setText(book.getTitle());
-        Field_bookAuthor.setText(book.getAuthor());
-       Field_bookPublishing.setText(book.getPublisher());
-        Field_bookYear.setText(book.getYear());
-        Field_bookChapter.setText(book.getKind());
     }
     @FXML
     private void SaveBook() throws IOException {
+        ComboModel itemAuthor = FieldBookAuthor.getSelectionModel().getSelectedItem();
+        ComboModel itemPublisher = FieldBookPublisher.getSelectionModel().getSelectedItem();
         if (isInputValid()) {
-            mc.AddId = 1;
             book.setTitle(FieldBookTitle.getText());
             book.setYear(FieldBookYear.getText());
+            book.setAuthor(hashAuthor.get(itemAuthor.getId()));
+            book.setPublisher(hashPublisher.get(itemPublisher.getId()));
             book.setKind(FieldBookKind.getText());
-
             okClicked = true;
             editBookStage.close();
+            setLabels(itemAuthor, itemPublisher);
             booksData.set(bookID, book);
         }
     }
-
-    @FXML
-    private void SaveAuthor() throws IOException {
-        if (isInputValid()) {
-            mc.AddId = 2;
-            author.setName(FieldAuthorName.getText());
-            author.setLastname(FieldAuthorLastname.getText());
-            author.setSurname(FieldAuthorSurname.getText());
-
-            okClicked = true;
-            editBookStage.close();
-            authorData.set(authorId, author);
-        }
+    public void setLabels (ComboModel itemAuthor, ComboModel itemPublisher) {
+        modelBook.add(new BookModel(
+                book.getId(),
+                book.getTitle(),
+                main.getFio(hashAuthor.get(itemAuthor.getId())),
+                itemPublisher.getMeaning(),
+                book.getYear(),
+                book.getKind()));
     }
 
-    @FXML
-    private void SavePublisher() throws IOException {
-        if (isInputValid()) {
-            mc.AddId = 3;
-            publisher.setPublisher(FieldPublisherName.getText());
-            publisher.setCity(FieldPublisherCity.getText());
-
-            okClicked = true;
-            editBookStage.close();
-            publisherData.set(PublisherId, publisher);
-        }
-    }
 
     @FXML
     void close(ActionEvent event) {

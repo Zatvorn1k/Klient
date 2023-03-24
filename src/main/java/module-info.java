@@ -15,6 +15,7 @@ module com.t.library {
     exports com.t.library.Servise;
     exports com.t.library.Utils;
     exports com.t.library.Model;
+    opens com.t.library.Model;
     opens com.t.library.Controller to javafx.fxml;
     opens com.t.library.Entity to com.google.gson;
     opens com.t.library.Response;

@@ -8,14 +8,11 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class BookModel {
+    private int id;
     private String title;
     private String fio;
     private String publisher;
     private String year;
     private String kind;
-    private String AuthorLastname;
-    private String AuthorName;
-    private String AuthorSurname;
-    private String PublisherCity;
-    private String PublisherName;
+
 }

@@ -10,9 +10,8 @@ import java.util.List;
 @RequiredArgsConstructor
 
 public class AuthorEntity {
-    private Long id;
+    private int id;
     private String name;
     private String lastname;
     private String surname;
-    private List<BookEntity> book;
 }
