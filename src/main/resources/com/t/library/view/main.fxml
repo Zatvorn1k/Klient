@@ -7,13 +7,13 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="462.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.t.library.Controller.MainController">
+<AnchorPane prefHeight="462.0" prefWidth="719.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.t.library.Controller.MainController">
    <children>
       <TabPane prefHeight="462.0" prefWidth="719.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Книги">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="tab_Anchor" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="tab_Anchor" stylesheets="@style.css">
                      <children>
                         <TableView fx:id="tableBooks" layoutY="33.0" prefHeight="405.0" prefWidth="719.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                           <columns>
@@ -29,7 +29,7 @@
                            </columnResizePolicy>
                         </TableView>
                         <Button layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#addWinBook" text="Добавить" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="636.0" AnchorPane.topAnchor="8.0" />
-                        <Button layoutX="87.0" layoutY="8.0" mnemonicParsing="false" text="Редактировать" AnchorPane.rightAnchor="534.0" AnchorPane.topAnchor="8.0" />
+                        <Button layoutX="87.0" layoutY="8.0" mnemonicParsing="false" onAction="#editBook" text="Редактировать" AnchorPane.rightAnchor="534.0" AnchorPane.topAnchor="8.0" />
                         <Button layoutX="189.0" layoutY="8.0" mnemonicParsing="false" onAction="#DeleteBook" text="Удалить" AnchorPane.rightAnchor="470.0" AnchorPane.topAnchor="8.0" />
                      </children>
                   </AnchorPane>
@@ -51,7 +51,7 @@
                            </columnResizePolicy>
                         </TableView>
                         <Button layoutY="14.0" mnemonicParsing="false" onAction="#addWinAuthor" text="Добавить" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0" />
-                        <Button layoutX="87.0" layoutY="8.0" mnemonicParsing="false" text="Редактировать" />
+                        <Button layoutX="87.0" layoutY="8.0" mnemonicParsing="false" onAction="#editAuthor" text="Редактировать" />
                         <Button layoutX="188.0" layoutY="9.0" mnemonicParsing="false" onAction="#DeleteAuthor" text="Удалить" />
                      </children>
                   </AnchorPane>
@@ -72,7 +72,7 @@
                            </columnResizePolicy>
                         </TableView>
                         <Button layoutY="14.0" mnemonicParsing="false" onAction="#addWinPublisher" text="Добавить" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0" />
-                        <Button layoutX="87.0" layoutY="8.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="Редактировать" />
+                        <Button layoutX="87.0" layoutY="8.0" mnemonicParsing="false" onAction="#editPublisher" prefHeight="25.0" prefWidth="98.0" text="Редактировать" />
                         <Button layoutX="189.0" layoutY="8.0" mnemonicParsing="false" onAction="#DeletePublisher" text="Удалить" />
                      </children>
                   </AnchorPane>

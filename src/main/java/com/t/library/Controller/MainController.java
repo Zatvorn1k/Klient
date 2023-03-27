@@ -1,5 +1,6 @@
 package com.t.library.Controller;
 
+import com.google.gson.*;
 import com.t.library.Entity.AuthorEntity;
 import com.t.library.Entity.PublisherEntity;
 import com.t.library.MainApp;
@@ -8,11 +9,9 @@ import com.t.library.Model.AuthorModel;
 import com.t.library.Model.BookModel;
 import com.t.library.Model.PublisherModel;
 import com.t.library.Utils.HTTPUtils;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
@@ -22,12 +21,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.InflaterOutputStream;
+
+import static com.t.library.Controller.EditBookController.authorMap;
+import static com.t.library.Controller.EditBookController.publisherMap;
 
 public class MainController {
 
-    public static String apiBook = "http://localhost:1000/api/v1/book/";
-    public static String apiAuthor = "http://localhost:1000/api/v1/author/";
-    public static String apiPublisher = "http://localhost:1000/api/v1/publish/";
+    public static String apiBook = "http://localhost:1111/api/v1/book/";
+    public static String apiAuthor = "http://localhost:1111/api/v1/author/";
+    public static String apiPublisher = "http://localhost:1111/api/v1/publish/";
     public static ObservableList<BookEntity> booksData = FXCollections.observableArrayList();
     public static ObservableList<AuthorEntity> authorData = FXCollections.observableArrayList();
     public static ObservableList<PublisherEntity> publisherData = FXCollections.observableArrayList();
@@ -88,11 +91,11 @@ public class MainController {
     }
     @FXML
     private void Hash(){
-        for(int i = 0; i < authorData.size(); i++){
-            hashAuthor.put(authorData.get(i).getId(), authorData.get(i));
+        for (AuthorEntity author : authorData) {
+            hashAuthor.put(author.getId(), author);
         }
-        for(int i = 0; i < hashPublisher.size(); i++){
-            hashPublisher.put(publisherData.get(i).getId(), publisherData.get(i));
+        for(PublisherEntity publisher : publisherData){
+            hashPublisher.put(publisher.getId(), publisher);
         }
     }
     private void updateTable() throws Exception {
@@ -118,20 +121,23 @@ public class MainController {
                     getFio(booksData.get(i).getAuthor()),
                     hashPublisher.get(booksData.get(i).getPublisher().getId()).getPublisher(),
                     booksData.get(i).getYear(),
-                    booksData.get(i).getKind()));
+                    booksData.get(i).getKind(),
+                    booksData.get(i)));
         }
             for (int i = 0; i < authorData.size(); i++) {
                 modelAuthor.add(new AuthorModel(
                         authorData.get(i).getId(),
                         authorData.get(i).getLastname(),
                         authorData.get(i).getName(),
-                        authorData.get(i).getSurname()));
+                        authorData.get(i).getSurname(),
+                        authorData.get(i)));
             }
         for (int i = 0; i < publisherData.size(); i++) {
             modelPublisher.add(new PublisherModel(
                     publisherData.get(i).getId(),
                     publisherData.get(i).getCity(),
-                    publisherData.get(i).getPublisher()));
+                    publisherData.get(i).getPublisher(),
+                    publisherData.get(i)));
         }
 
     }
@@ -171,34 +177,66 @@ public class MainController {
     private void addWinBook() throws IOException {
         BookEntity tempBook = new BookEntity();
         booksData.add(tempBook);
-        MainApp.showPersonEditDialog(tempBook, booksData.size() - 1);
-        addBook(tempBook);
+        MainApp.showPersonEditDialog(tempBook, booksData.size() - 1, true);
+        if(tempBook.getTitle() == null){
+            booksData.remove(booksData.size() - 1);
+            System.out.println("ОШЫБКА");
+        } else {
+        int id = addBook(tempBook);
+        modelBook.get(booksData.size() - 1).setId(id);}
     }
-    public static void addBook(BookEntity book) throws IOException {
-        book.setId(0);
-        System.out.println(http.post(apiBook + "add", gson.toJson(book).toString()));
+    public static int addBook(BookEntity book) throws IOException {
+            book.setId(0);
+            String res = http.post(apiBook + "add", gson.toJson(book).toString());
+            JsonObject jsonObject = new JsonParser().parse(res).getAsJsonObject();
+            int tempId = jsonObject.getAsJsonObject("book").get("id").getAsInt();
+            return tempId;
     }
     @FXML
     private void addWinAuthor() throws IOException {
         AuthorEntity tempAuthor = new AuthorEntity();
         authorData.add(tempAuthor);
-        MainApp.showAuthorEditDialog(tempAuthor, authorData.size() - 1);
-        addAuthor(tempAuthor);
+        System.out.println(authorData.size());
+        MainApp.showAuthorEditDialog(tempAuthor, authorData.size() - 1, true);
+        if(tempAuthor.getName() == null){
+            authorData.remove(authorData.size() - 1);
+            System.out.println("ОШЫБКА");
+        } else {
+            int id = addAuthor(tempAuthor);
+            authorData.get(authorData.size() - 1).setId(id);
+            modelAuthor.get(authorData.size() - 1).setId(id);
+            hashAuthor.put(tempAuthor.getId(), tempAuthor);
+        }
     }
-    public static void addAuthor(AuthorEntity author) throws IOException {
+    public static int addAuthor(AuthorEntity author) throws IOException {
         author.setId(0);
-        http.post(apiAuthor + "add", gson.toJson(author).toString());
+        String res = http.post(apiAuthor + "add", gson.toJson(author).toString());
+        JsonObject jsonObject = new JsonParser().parse(res).getAsJsonObject();
+        int tempId = jsonObject.getAsJsonObject("author").get("id").getAsInt();
+        return tempId;
+
     }
     @FXML
     private void addWinPublisher() throws IOException {
         PublisherEntity tempPublisher = new PublisherEntity();
         publisherData.add(tempPublisher);
-        MainApp.showPublisherEditDialog(tempPublisher, publisherData.size() - 1);
-        addPublisher(tempPublisher);
+        MainApp.showPublisherEditDialog(tempPublisher, publisherData.size() - 1, true);
+        if(tempPublisher.getPublisher() == null){
+            publisherData.remove(publisherData.size() - 1);
+            System.out.println("ОШЫБКА");
+        } else {
+            int id = addPublisher(tempPublisher);
+            publisherData.get(publisherData.size() - 1).setId(id);
+            modelPublisher.get(publisherData.size() - 1).setId(id);
+            hashPublisher.put(tempPublisher.getId(), tempPublisher);
+        }
     }
-    public static void addPublisher(PublisherEntity publisher) throws IOException {
+    public static int addPublisher(PublisherEntity publisher) throws IOException {
         publisher.setId(0);
-        http.post(apiPublisher + "add", gson.toJson(publisher).toString());
+        String res = http.post(apiPublisher + "add", gson.toJson(publisher).toString());
+        JsonObject jsonObject = new JsonParser().parse(res).getAsJsonObject();
+        int tempId = jsonObject.getAsJsonObject("publisher").get("id").getAsInt();
+        return tempId;
     }
     public static void updateBook(BookEntity book) throws IOException {
         http.put(apiBook + "update", gson.toJson(book).toString());
@@ -208,11 +246,11 @@ public class MainController {
     private void DeleteBook() throws IOException {
         BookModel selectedPerson = tableBooks.getSelectionModel().getSelectedItem();
         if (selectedPerson != null) {
-            System.out.println(selectedPerson.getId());
+            selectedPerson.getId();
             http.delete(apiBook + "delete/", selectedPerson.getId());
+            booksData.remove(selectedPerson.getModelEntityBook());
             modelBook.remove(selectedPerson);
         } else {
-
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Ничего не выбрано");
             alert.setHeaderText("Отсутствует выбраный пользователь");
@@ -226,9 +264,9 @@ public class MainController {
         if (selectedPerson != null) {
             System.out.println(selectedPerson.getId());
             http.delete(apiAuthor + "delete/", selectedPerson.getId());
+            authorData.remove(selectedPerson.getModelEntityAuthor());
             modelAuthor.remove(selectedPerson);
         } else {
-
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Ничего не выбрано");
             alert.setHeaderText("Отсутствует выбраный пользователь");
@@ -242,13 +280,65 @@ public class MainController {
         if (selectedPerson != null) {
             System.out.println(selectedPerson.getId());
             http.delete(apiPublisher + "delete/", selectedPerson.getId());
+            publisherData.remove(selectedPerson.getModelEntityPublisher());
             modelPublisher.remove(selectedPerson);
         } else {
-
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Ничего не выбрано");
             alert.setHeaderText("Отсутствует выбраный пользователь");
             alert.setContentText("Пожалуйста, выберите пользователя в таблице");
+            alert.showAndWait();
+        }
+    }
+    ////////////////////////////Редактирование/////////////////////////////////////
+    @FXML
+    private void editBook() throws Exception{
+        BookModel selectedPerson = tableBooks.getSelectionModel().getSelectedItem();
+        if (selectedPerson != null) {
+            MainApp.showPersonEditDialog(selectedPerson.getModelEntityBook(), booksData.indexOf(selectedPerson.getModelEntityBook()), false);
+            http.put(apiBook + "update", gson.toJson(selectedPerson.getModelEntityBook()).toString());
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            //alert.initOwner(Application.getPrimaryStage());
+            alert.setTitle("Ничего не выбрно");
+            alert.setHeaderText("Отсутствует выбраный польватель");
+            alert.setContentText("Пожалуйста, выберите пользвоателя в таблице");
+            alert.setContentText("Пожалуйста, выберите пользвоателя в таблицеа");
+            alert.showAndWait();
+        }
+    }
+    @FXML
+    private void editAuthor() throws Exception{
+        AuthorModel selectedPerson = tableAuthor.getSelectionModel().getSelectedItem();
+        if (selectedPerson != null) {
+            MainApp.showAuthorEditDialog(selectedPerson.getModelEntityAuthor(), authorData.indexOf(selectedPerson.getModelEntityAuthor()), false);
+            http.put(apiAuthor + "update", gson.toJson(selectedPerson.getModelEntityAuthor()).toString());
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            //alert.initOwner(Application.getPrimaryStage());
+            alert.setTitle("Ничего не выбрно");
+            alert.setHeaderText("Отсутствует выбраный польватель");
+            alert.setContentText("Пожалуйста, выберите пользвоателя в таблице");
+            alert.setContentText("Пожалуйста, выберите пользвоателя в таблицеа");
+            alert.showAndWait();
+        }
+    }
+    @FXML
+    private void editPublisher() throws Exception{
+        PublisherModel selectedPerson = tablePublisher.getSelectionModel().getSelectedItem();
+        if (selectedPerson != null) {
+            MainApp.showPublisherEditDialog(selectedPerson.getModelEntityPublisher(), publisherData.indexOf(selectedPerson.getModelEntityPublisher()), false);
+            http.put(apiPublisher + "update", gson.toJson(selectedPerson.getModelEntityPublisher()).toString());
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            //alert.initOwner(Application.getPrimaryStage());
+            alert.setTitle("Ничего не выбрно");
+            alert.setHeaderText("Отсутствует выбраный польватель");
+            alert.setContentText("Пожалуйста, выберите пользвоателя в таблице");
+            alert.setContentText("Пожалуйста, выберите пользвоателя в таблицеа");
             alert.showAndWait();
         }
     }

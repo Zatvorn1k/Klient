@@ -37,7 +37,7 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
     }
-   public static boolean showPersonEditDialog(BookEntity bookObj, int id){
+   public static boolean showPersonEditDialog(BookEntity bookObj, int id, boolean Add){
        try {
           FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/editWinBook.fxml"));
@@ -48,7 +48,8 @@ public class MainApp extends Application {
             Scene scene = new Scene(main);
              EditBookController controller = loader.getController();
              controller.setDialogStage(dialogStage);
-           controller.setInit(bookObj, id);
+           controller.setInit(bookObj, id, Add);
+           controller.setEdit();
            dialogStage.setScene(scene);
             dialogStage.showAndWait();
              return controller.isOkClicked();
@@ -57,7 +58,7 @@ public class MainApp extends Application {
             return false;
        }
     }
-    public static boolean showAuthorEditDialog(AuthorEntity authorObj, int id){
+    public static boolean showAuthorEditDialog(AuthorEntity authorObj, int id, boolean Add){
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/editWinAuthor.fxml"));
@@ -68,7 +69,8 @@ public class MainApp extends Application {
             Scene scene = new Scene(main);
             EditAuthorController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setInit(authorObj, id);
+            controller.setInit(authorObj, id, Add);
+            controller.setEdit();
             dialogStage.setScene(scene);
             dialogStage.showAndWait();
             return controller.isOkClicked();
@@ -77,7 +79,7 @@ public class MainApp extends Application {
             return false;
         }
     }
-    public static boolean showPublisherEditDialog(PublisherEntity publisherObj, int id){
+    public static boolean showPublisherEditDialog(PublisherEntity publisherObj, int id, boolean Add){
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/editWinPublisher.fxml"));
@@ -88,7 +90,8 @@ public class MainApp extends Application {
             Scene scene = new Scene(main);
             EditPublisherController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setInit(publisherObj, id);
+            controller.setInit(publisherObj, id, Add);
+            controller.setEdit();
             dialogStage.setScene(scene);
             dialogStage.showAndWait();
             return controller.isOkClicked();

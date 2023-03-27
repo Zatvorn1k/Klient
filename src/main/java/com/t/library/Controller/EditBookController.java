@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -37,20 +38,23 @@ public class EditBookController {
 
     @FXML
     private TextField FieldBookYear;
-    private ObservableList<ComboModel> authorMap = FXCollections.observableArrayList();
-    private ObservableList<ComboModel> publisherMap = FXCollections.observableArrayList();
+    public static ObservableList<ComboModel> authorMap = FXCollections.observableArrayList();
+    public static ObservableList<ComboModel> publisherMap = FXCollections.observableArrayList();
     private Stage editBookStage;
     private BookEntity book;
+    private boolean EditOrAdd;
     private int bookID;
     private boolean okClicked = false;
     @FXML
     private void initialize() throws Exception {
+        if (authorMap.size() != authorData.size()){
         updateMap();
+        }
         updateComboBox();
     }
     private void updateComboBox() throws Exception {
-        FieldBookAuthor.setItems(authorMap);
-        FieldBookPublisher.setItems(publisherMap);
+        FieldBookAuthor.getItems().addAll(authorMap);
+        FieldBookPublisher.getItems().addAll(publisherMap);
     }
     private void updateMap(){
         for(int i = 0;i < authorData.size();i++){
@@ -68,9 +72,10 @@ public class EditBookController {
     public boolean isOkClicked() {
         return okClicked;
     }
-    public void setInit (BookEntity bookIn, int Id){
+    public void setInit (BookEntity bookIn, int Id, boolean Add){
         this.book = bookIn;
         this.bookID = Id;
+        this.EditOrAdd = Add;
     }
     @FXML
     private void SaveBook() throws IOException {
@@ -84,7 +89,12 @@ public class EditBookController {
             book.setKind(FieldBookKind.getText());
             okClicked = true;
             editBookStage.close();
-            setLabels(itemAuthor, itemPublisher);
+            System.out.println(EditOrAdd);
+            if (EditOrAdd){
+                setLabels(itemAuthor, itemPublisher);
+            }
+            else
+                editLabels(itemAuthor, itemPublisher);
             booksData.set(bookID, book);
         }
     }
@@ -93,9 +103,27 @@ public class EditBookController {
                 book.getId(),
                 book.getTitle(),
                 main.getFio(hashAuthor.get(itemAuthor.getId())),
-                itemPublisher.getMeaning(),
+                book.getPublisher().getPublisher(),
                 book.getYear(),
-                book.getKind()));
+                book.getKind(),
+                book));
+    }
+    public void editLabels(ComboModel itemAuthor, ComboModel itemPublisher){
+        BookModel model = new BookModel(
+                book.getId(),
+                book.getTitle(),
+                main.getFio(hashAuthor.get(itemAuthor.getId())),
+                book.getPublisher().getPublisher(),
+                book.getYear(),
+                book.getKind(),
+                book);
+        modelBook.set(bookID, model);
+    }
+
+    public void setEdit(){
+        FieldBookTitle.setText(book.getTitle());
+        FieldBookYear.setText(book.getYear());
+        FieldBookKind.setText(book.getKind());
     }
 
 
@@ -105,44 +133,42 @@ public class EditBookController {
     }
 
     private boolean isInputValid() {
-    return true;}
-}
-//        String errorMessage = "";
-//        try {
-//            if (!Field_bookName.getText().matches("[\\sA-ZА-Яa-za-я]{1,10}"))
-//                errorMessage += "Название книги, введено некорректно \n";
-//            if (!Field_bookAuthor.getText().matches("[\\sA-ZА-Яa-za-я]{1,10}") || Field_bookAuthor.getText() == null)
-//                errorMessage += "Имя Автора, введено некорректно \n";
-//            if (!Field_bookPublishing.getText().matches("[\\sA-ZА-Яa-za-я]{1,10}") || Field_bookPublishing.getText() == null)
-//                errorMessage += "Место публикации, введено некорректно\n";
-//            if (!Field_bookChapter.getText().matches("[\\sA-ZА-Яa-za-я]{1,10}") || Field_bookChapter.getText() == null)
-//                errorMessage += "Раздел содержания, введен некорректно!\n";
-//            else {
-//                try {
-//                    Integer.parseInt(Field_bookYear.getText());
-//                } catch (NumberFormatException e) {
-//                    errorMessage += "Не корректное значение года выпуска книги (должно быть целочисленным) !\n";
-//                }
-//            }
-//            if (!Field_bookYear.getText().matches("[\\d0-9]{3,4}") || Field_bookYear.getText() == null)
-//                errorMessage += "Год выпуска введен некорректно! \n";
-//        }catch (Exception e){
-//            errorMessage += "Пустое поле!";
-//        }
-//
-//
-//        if (errorMessage.length() == 0) return true;
-//        else {
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.initOwner(editBookStage);
-//            alert.setTitle("Ошибка заполнения");
-//            alert.setHeaderText("Пожалуйста, укажите корректные значения текстовых полей");
-//            alert.setContentText(errorMessage);
-//
-//            alert.showAndWait();
-//
-//            return false;
-//        }
-//    }
+        String errorMessage = "";
+        try {
+            if (!FieldBookTitle.getText().matches("[\\sA-ZА-Яa-za-я]{1,10}"))
+                errorMessage += "Название книги, введено некорректно \n";
+            if (FieldBookAuthor.getSelectionModel().getSelectedItem() == null)
+                errorMessage += "Автор должен быть выбран \n";
+            if (FieldBookPublisher.getSelectionModel().getSelectedItem() == null)
+                errorMessage += "Издательство должно быть выбрано\n";
+            if (!FieldBookKind.getText().matches("[\\sA-ZА-Яa-za-я]{1,10}") || FieldBookKind.getText() == null)
+                errorMessage += "Раздел содержания, введен некорректно!\n";
+            else {
+                try {
+                    Integer.parseInt(FieldBookYear.getText());
+                } catch (NumberFormatException e) {
+                    errorMessage += "Не корректное значение года выпуска книги (должно быть целочисленным) !\n";
+                }
+            }
+            if (!FieldBookYear.getText().matches("[\\d0-9]{3,4}") || FieldBookYear.getText() == null)
+               errorMessage += "Год выпуска введен некорректно! \n";
+        }catch (Exception e){
+            errorMessage += "Пустое поле!";
+        }
 
+
+        if (errorMessage.length() == 0) return true;
+        else {
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(editBookStage);
+            alert.setTitle("Ошибка заполнения");
+            alert.setHeaderText("Пожалуйста, укажите корректные значения текстовых полей");
+            alert.setContentText(errorMessage);
+
+            alert.showAndWait();
+
+            return false;
+        }
+    }
+}
 

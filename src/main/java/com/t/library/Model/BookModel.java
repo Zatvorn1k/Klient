@@ -1,5 +1,6 @@
 package com.t.library.Model;
 
+import com.t.library.Entity.BookEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -14,5 +15,7 @@ public class BookModel {
     private String publisher;
     private String year;
     private String kind;
+
+    private BookEntity ModelEntityBook;
 
 }
