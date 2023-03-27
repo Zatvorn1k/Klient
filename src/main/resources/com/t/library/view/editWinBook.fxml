@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="284.0" prefWidth="453.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.t.library.Controller.EditBookController">
    <children>
-    <AnchorPane layoutY="8.0" minHeight="0.0" minWidth="0.0" prefHeight="257.0" prefWidth="453.0">
+    <AnchorPane id="tab_Anchor" layoutY="-6.0" minHeight="0.0" minWidth="0.0" prefHeight="298.0" prefWidth="453.0" stylesheets="@style.css">
          <children>
             <GridPane layoutX="47.0" layoutY="36.0" prefHeight="173.0" prefWidth="360.0">
               <columnConstraints>
@@ -62,8 +62,8 @@
             </GridPane>
             <ButtonBar layoutX="239.0" layoutY="219.0" prefHeight="40.0" prefWidth="200.0">
               <buttons>
-                <Button mnemonicParsing="false" onAction="#SaveBook" text="Сохранить" />
-                  <Button mnemonicParsing="false" onAction="#close" text="Закрыть" />
+                <Button id="Button" mnemonicParsing="false" onAction="#SaveBook" text="Сохранить" />
+                  <Button id="Button" mnemonicParsing="false" onAction="#close" text="Закрыть" />
               </buttons>
             </ButtonBar>
          </children>

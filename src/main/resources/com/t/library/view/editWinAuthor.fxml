@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="281.0" prefWidth="453.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.t.library.Controller.EditAuthorController">
+<AnchorPane id="tab_Anchor" prefHeight="247.0" prefWidth="453.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.t.library.Controller.EditAuthorController">
    <children>
-  <AnchorPane layoutY="6.0" minHeight="0.0" minWidth="0.0" prefHeight="239.0" prefWidth="453.0">
+  <AnchorPane id="tab_Anchor" layoutY="-1.0" minHeight="0.0" minWidth="0.0" prefHeight="248.0" prefWidth="453.0" stylesheets="@style.css">
          <children>
             <GridPane layoutX="47.0" layoutY="60.0" prefHeight="115.0" prefWidth="360.0">
               <columnConstraints>
@@ -45,14 +45,14 @@
                   <TextField fx:id="FieldAuthorSurname" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
-            <ButtonBar layoutX="189.0" layoutY="219.0" prefHeight="40.0" prefWidth="250.0">
+            <ButtonBar layoutX="189.0" layoutY="194.0" prefHeight="40.0" prefWidth="250.0">
               <buttons>
-                <Button mnemonicParsing="false" onAction="#SaveAuthor" text="Сохранить">
+                <Button id="Button" mnemonicParsing="false" onAction="#SaveAuthor" text="Сохранить">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button fx:id="CloseBook" mnemonicParsing="false" onAction="#close" text="Закрыть">
+                  <Button id="Button" fx:id="CloseBook" mnemonicParsing="false" onAction="#close" text="Закрыть">
                      <font>
                         <Font size="13.0" />
                      </font>

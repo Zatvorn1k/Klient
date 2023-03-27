@@ -1,3 +1,25 @@
+*{
+    -fx-text-fill: white;
+    -fx-font-family: Arial;
+    -fx-border-width: 0;
+}
 #tab_Anchor{
-    -fx-background-color: black;
+    -fx-background-color: #36393e;
+}
+#tableColumn{
+    -fx-background-color: #3c4146;
+    -fx-text-origin: white;
+}
+#tableColumn:hover{
+    -fx-background-color: #5d626b;
+}
+#table{
+    -fx-text-fill: white;
+    -fx-background-color: #8c8c8c;
+}
+#Button{
+    -fx-background-color: grey;
+}
+#Tab{
+    -fx-background-color: #3c4146;
 }

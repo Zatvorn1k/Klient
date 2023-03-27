@@ -11,7 +11,6 @@ import com.t.library.Model.PublisherModel;
 import com.t.library.Utils.HTTPUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
@@ -21,10 +20,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.InflaterOutputStream;
-
-import static com.t.library.Controller.EditBookController.authorMap;
-import static com.t.library.Controller.EditBookController.publisherMap;
 
 public class MainController {
 
@@ -81,7 +76,7 @@ public class MainController {
     @FXML
     public int AddId = 0;
 
-/////////////////////Инициализацияю////////////////////////////
+    /////////////////////Инициализацияю////////////////////////////
     @FXML
     private void initialize() throws Exception {
         getData();
@@ -89,15 +84,17 @@ public class MainController {
         AddModel();
         updateTable();
     }
+
     @FXML
-    private void Hash(){
+    private void Hash() {
         for (AuthorEntity author : authorData) {
             hashAuthor.put(author.getId(), author);
         }
-        for(PublisherEntity publisher : publisherData){
+        for (PublisherEntity publisher : publisherData) {
             hashPublisher.put(publisher.getId(), publisher);
         }
     }
+
     private void updateTable() throws Exception {
         bookName.setCellValueFactory(new PropertyValueFactory<BookModel, String>("title"));
         bookPublisher.setCellValueFactory(new PropertyValueFactory<BookModel, String>("publisher"));
@@ -113,6 +110,7 @@ public class MainController {
         PublisherName.setCellValueFactory(new PropertyValueFactory<PublisherModel, String>("PublisherName"));
         tablePublisher.setItems(modelPublisher);
     }
+
     private void AddModel() {
         for (int i = 0; i < booksData.size(); i++) {
             modelBook.add(new BookModel(
@@ -124,14 +122,14 @@ public class MainController {
                     booksData.get(i).getKind(),
                     booksData.get(i)));
         }
-            for (int i = 0; i < authorData.size(); i++) {
-                modelAuthor.add(new AuthorModel(
-                        authorData.get(i).getId(),
-                        authorData.get(i).getLastname(),
-                        authorData.get(i).getName(),
-                        authorData.get(i).getSurname(),
-                        authorData.get(i)));
-            }
+        for (int i = 0; i < authorData.size(); i++) {
+            modelAuthor.add(new AuthorModel(
+                    authorData.get(i).getId(),
+                    authorData.get(i).getLastname(),
+                    authorData.get(i).getName(),
+                    authorData.get(i).getSurname(),
+                    authorData.get(i)));
+        }
         for (int i = 0; i < publisherData.size(); i++) {
             modelPublisher.add(new PublisherModel(
                     publisherData.get(i).getId(),
@@ -141,9 +139,11 @@ public class MainController {
         }
 
     }
+
     public String getFio(AuthorEntity author) {
         return author.getLastname() + " " + author.getName().charAt(0) + ". " + author.getSurname().charAt(0);
     }
+
     public static void getData() throws Exception {
         String resBook = http.get(apiBook, "all");
         System.out.println(resBook);
@@ -178,27 +178,30 @@ public class MainController {
         BookEntity tempBook = new BookEntity();
         booksData.add(tempBook);
         MainApp.showPersonEditDialog(tempBook, booksData.size() - 1, true);
-        if(tempBook.getTitle() == null){
+        if (tempBook.getTitle() == null) {
             booksData.remove(booksData.size() - 1);
             System.out.println("ОШЫБКА");
         } else {
-        int id = addBook(tempBook);
-        modelBook.get(booksData.size() - 1).setId(id);}
+            int id = addBook(tempBook);
+            modelBook.get(booksData.size() - 1).setId(id);
+        }
     }
+
     public static int addBook(BookEntity book) throws IOException {
-            book.setId(0);
-            String res = http.post(apiBook + "add", gson.toJson(book).toString());
-            JsonObject jsonObject = new JsonParser().parse(res).getAsJsonObject();
-            int tempId = jsonObject.getAsJsonObject("book").get("id").getAsInt();
-            return tempId;
+        book.setId(0);
+        String res = http.post(apiBook + "add", gson.toJson(book).toString());
+        JsonObject jsonObject = new JsonParser().parse(res).getAsJsonObject();
+        int tempId = jsonObject.getAsJsonObject("book").get("id").getAsInt();
+        return tempId;
     }
+
     @FXML
     private void addWinAuthor() throws IOException {
         AuthorEntity tempAuthor = new AuthorEntity();
         authorData.add(tempAuthor);
         System.out.println(authorData.size());
         MainApp.showAuthorEditDialog(tempAuthor, authorData.size() - 1, true);
-        if(tempAuthor.getName() == null){
+        if (tempAuthor.getName() == null) {
             authorData.remove(authorData.size() - 1);
             System.out.println("ОШЫБКА");
         } else {
@@ -208,6 +211,7 @@ public class MainController {
             hashAuthor.put(tempAuthor.getId(), tempAuthor);
         }
     }
+
     public static int addAuthor(AuthorEntity author) throws IOException {
         author.setId(0);
         String res = http.post(apiAuthor + "add", gson.toJson(author).toString());
@@ -216,12 +220,13 @@ public class MainController {
         return tempId;
 
     }
+
     @FXML
     private void addWinPublisher() throws IOException {
         PublisherEntity tempPublisher = new PublisherEntity();
         publisherData.add(tempPublisher);
         MainApp.showPublisherEditDialog(tempPublisher, publisherData.size() - 1, true);
-        if(tempPublisher.getPublisher() == null){
+        if (tempPublisher.getPublisher() == null) {
             publisherData.remove(publisherData.size() - 1);
             System.out.println("ОШЫБКА");
         } else {
@@ -231,6 +236,7 @@ public class MainController {
             hashPublisher.put(tempPublisher.getId(), tempPublisher);
         }
     }
+
     public static int addPublisher(PublisherEntity publisher) throws IOException {
         publisher.setId(0);
         String res = http.post(apiPublisher + "add", gson.toJson(publisher).toString());
@@ -238,11 +244,13 @@ public class MainController {
         int tempId = jsonObject.getAsJsonObject("publisher").get("id").getAsInt();
         return tempId;
     }
+
     public static void updateBook(BookEntity book) throws IOException {
         http.put(apiBook + "update", gson.toJson(book).toString());
     }
+
     //////////////////////////////////Удаление////////////////////////////////
-        @FXML
+    @FXML
     private void DeleteBook() throws IOException {
         BookModel selectedPerson = tableBooks.getSelectionModel().getSelectedItem();
         if (selectedPerson != null) {
@@ -258,6 +266,7 @@ public class MainController {
             alert.showAndWait();
         }
     }
+
     @FXML
     private void DeleteAuthor() throws IOException {
         AuthorModel selectedPerson = tableAuthor.getSelectionModel().getSelectedItem();
@@ -274,6 +283,7 @@ public class MainController {
             alert.showAndWait();
         }
     }
+
     @FXML
     private void DeletePublisher() throws IOException {
         PublisherModel selectedPerson = tablePublisher.getSelectionModel().getSelectedItem();
@@ -290,15 +300,15 @@ public class MainController {
             alert.showAndWait();
         }
     }
+
     ////////////////////////////Редактирование/////////////////////////////////////
     @FXML
-    private void editBook() throws Exception{
+    private void editBook() throws Exception {
         BookModel selectedPerson = tableBooks.getSelectionModel().getSelectedItem();
         if (selectedPerson != null) {
             MainApp.showPersonEditDialog(selectedPerson.getModelEntityBook(), booksData.indexOf(selectedPerson.getModelEntityBook()), false);
             http.put(apiBook + "update", gson.toJson(selectedPerson.getModelEntityBook()).toString());
-        }
-        else {
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             //alert.initOwner(Application.getPrimaryStage());
             alert.setTitle("Ничего не выбрно");
@@ -308,14 +318,14 @@ public class MainController {
             alert.showAndWait();
         }
     }
+
     @FXML
-    private void editAuthor() throws Exception{
+    private void editAuthor() throws Exception {
         AuthorModel selectedPerson = tableAuthor.getSelectionModel().getSelectedItem();
         if (selectedPerson != null) {
             MainApp.showAuthorEditDialog(selectedPerson.getModelEntityAuthor(), authorData.indexOf(selectedPerson.getModelEntityAuthor()), false);
             http.put(apiAuthor + "update", gson.toJson(selectedPerson.getModelEntityAuthor()).toString());
-        }
-        else {
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             //alert.initOwner(Application.getPrimaryStage());
             alert.setTitle("Ничего не выбрно");
@@ -325,14 +335,14 @@ public class MainController {
             alert.showAndWait();
         }
     }
+
     @FXML
-    private void editPublisher() throws Exception{
+    private void editPublisher() throws Exception {
         PublisherModel selectedPerson = tablePublisher.getSelectionModel().getSelectedItem();
         if (selectedPerson != null) {
             MainApp.showPublisherEditDialog(selectedPerson.getModelEntityPublisher(), publisherData.indexOf(selectedPerson.getModelEntityPublisher()), false);
             http.put(apiPublisher + "update", gson.toJson(selectedPerson.getModelEntityPublisher()).toString());
-        }
-        else {
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             //alert.initOwner(Application.getPrimaryStage());
             alert.setTitle("Ничего не выбрно");
